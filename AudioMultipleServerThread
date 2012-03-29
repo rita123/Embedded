@@ -1,0 +1,42 @@
+package AudioDistribution;
+
+import java.net.*;
+import java.io.*;
+
+
+public class AudioMultipleServerThread extends Thread {
+
+    private Socket socket = null;
+
+    public AudioMultipleServerThread(Socket socket) {
+        super("AudioMultipleServerThread");
+        this.socket = socket;
+    }
+
+    public void run() {
+
+        try {
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+
+            String theinputLine, theoutputLine;
+            AudioProtocol kkp = new AudioProtocol();
+          theoutputLine = kkp.processInput(null);
+            out.println(theoutputLine);
+
+            while ((theinputLine = in.readLine()) != null) {
+               theoutputLine = kkp.processInput(theinputLine);
+                out.println(theoutputLine);
+            }
+
+            out.close();
+            in.close();
+            socket.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
