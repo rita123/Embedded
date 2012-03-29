@@ -1,0 +1,117 @@
+package AudioDistribution;
+
+import java.net.*;
+
+import java.io.*;
+
+public class AudioProtocol {
+
+    private static final int WAITING = 0;
+    private static final int PIN = 1;
+    private static final int REQUESTPLAY = 2;
+    private static final int REQUESTRACKINFO = 3;
+    private static final int EMERGENCYSTOP = 4;
+    private static final int ACKPACKET = 5;
+    private static final int NAKPACKET = 6;
+    private static final int MULTICASTPACKET = 7;
+    private static int STATE = WAITING;
+
+    public String processInput(String theInput) {
+        String theOutput = "";
+
+        System.out.println("packet" + theInput + " state " + STATE);
+        int option = 0;
+
+        if (theInput != null) {
+            STATE = Integer.parseInt(theInput.substring(0, 1));
+            System.out.println(STATE + " STATE");
+        } else {
+            STATE = WAITING;
+        }
+
+        switch (STATE) {
+
+
+
+            case 1:
+                String pin = theInput.substring(1, 5);
+                System.out.println(pin + "pin");
+
+                theOutput = "1";
+                System.out.println("The number is 1.");
+                STATE = PIN;
+
+                break;
+            case 2:
+                theOutput = "2";
+                String requestplay = theInput.substring(1, 4);
+                System.out.println(requestplay + "requestplay");
+                System.out.println("The number is 2.");
+
+                STATE = REQUESTPLAY;
+//                //Code to read from database
+//                ResultSet results = stmt.executeQuery "SELECT ARTIST FROM Audio");
+//                while (results.next()) {
+//                    String s = results.getString("A");
+//                    displayText.append(s + "\n");
+//                }
+//                stmt.close();
+//        } 
+//    catch(java.sql.SQLException e
+//
+//    
+//        ){
+//      System.out.println("Cannot create SQL statement");
+//    }
+//    
+                break;
+
+            case 3:
+                theOutput = "3";
+                String requestrackinfo = theInput.substring(1, 4);
+
+                System.out.println(requestrackinfo
+                        + "requestrackinfo");
+                STATE = REQUESTRACKINFO;
+
+                break;
+
+
+            case 4:
+                theOutput = "4";
+                STATE = EMERGENCYSTOP;
+
+                break;
+
+            case 5:
+                theOutput = "5 ";
+                STATE = ACKPACKET;
+
+                break;
+
+
+            case 6:
+                theOutput = "6 ";
+                STATE = NAKPACKET;
+
+                break;
+
+
+            case 7:
+                theOutput = "7Multicast packet is being sent";
+                STATE = MULTICASTPACKET;
+
+                break;
+
+
+            default:
+                theOutput = "invalid input";
+
+
+                break;
+        }
+
+
+        return theOutput;
+    }
+}
