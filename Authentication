@@ -1,0 +1,63 @@
+/*
+ * **   * Received by the Users Server to authenticate a new client. 
+ */
+package AudioDistribution;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+
+/**
+ *
+ * @author ro-tunde
+ */
+public class Authentication implements AudioDistribution {
+     private String username;    
+     private String password; 
+
+     public Authentication() {
+     
+          this(null, null); 
+          
+     }
+     public Authentication(DataInputStream in) throws IOException {
+         read(in); 
+     }
+     public Authentication(String username, String password) { 
+         this.username = username; 
+         this.password = password;     
+     }  
+      public Authentication(Authentication authentication) {    
+          this(authentication.getUsername(), authentication.getPassword());    
+      }  
+      public void read(DataInputStream in) throws IOException  {      
+          username = in.readUTF();
+          password = in.readUTF();  
+      }
+       public void write(DataOutputStream out) throws IOException {  
+//           out.writeUTF(getCode().name());  
+           out.writeUTF(username);      
+           out.writeUTF(password);     
+       }  
+//      public Code getCode() {
+//          return Code.AUTHENTICATION;  
+//      }   
+       public Authentication copy() {
+           return new Authentication(this); 
+       } 
+        public String getUsername() {  
+            return username;
+        }  
+        public void setUsername(String username) { 
+            this.username = username;  
+        } 
+        public String getPassword() {
+            return password;  
+        }  
+        public void setPassword(String password) {
+            this.password = password;    
+        }  
+}    
+
+        
+
